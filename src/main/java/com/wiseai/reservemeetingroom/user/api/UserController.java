@@ -1,13 +1,18 @@
 package com.wiseai.reservemeetingroom.user.api;
 
 import com.wiseai.reservemeetingroom.core.domain.UrlPath.User;
+import com.wiseai.reservemeetingroom.user.api.request.CreateUser;
 import com.wiseai.reservemeetingroom.user.api.response.UserResponse;
 import com.wiseai.reservemeetingroom.user.app.UserFacade;
+import com.wiseai.reservemeetingroom.user.app.dto.UserDto;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -36,7 +41,16 @@ public class UserController {
 	public List<UserResponse> searchUsers(
 		@RequestParam(value = "keyword", defaultValue = "") String keyword
 	) {
-		return userFacade.searchUser(keyword).stream().map(UserResponse::from).toList();
+		return userFacade.searchUsers(keyword).stream().map(UserResponse::from).toList();
+	}
+
+	@ResponseStatus(HttpStatus.OK)
+	@PostMapping
+	public UserResponse createUser(
+		@RequestBody @Valid CreateUser user
+	) {
+		UserDto saveUser = userFacade.createUser(user.toDto());
+		return UserResponse.from(saveUser);
 	}
 
 

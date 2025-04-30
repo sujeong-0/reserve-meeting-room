@@ -52,4 +52,11 @@ public class UserDto {
 			.build();
 
 	}
+
+	public User toEntity() {
+		return User.builder()
+			.email(this.email)
+			.name(this.name)
+			.build();
+	}
 }

@@ -2,6 +2,7 @@ package com.wiseai.reservemeetingroom.user.domain.service;
 
 import com.wiseai.reservemeetingroom.user.domain.User;
 import com.wiseai.reservemeetingroom.user.domain.repository.UserRepository;
+import com.wiseai.reservemeetingroom.user.exception.DuplicateEmailException;
 import com.wiseai.reservemeetingroom.user.exception.NotFoundUserException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,17 @@ public class UserService {
 		return userRepository.findById(userId)
 			.orElseThrow(() -> new NotFoundUserException(userId));
 	}
-	public List<User> findExistingUser(String keyword) {
+
+	public List<User> findUsers(String keyword) {
 		return userRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword, keyword);
+	}
+
+	public User createUser(User user) {
+		userRepository.findByEmail(user.getEmail())
+			.ifPresent(existing -> {
+				throw new DuplicateEmailException(user.getEmail());
+			});
+
+		return userRepository.save(user);
 	}
 }

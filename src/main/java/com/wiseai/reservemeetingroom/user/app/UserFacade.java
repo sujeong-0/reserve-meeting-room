@@ -1,6 +1,7 @@
 package com.wiseai.reservemeetingroom.user.app;
 
 import com.wiseai.reservemeetingroom.user.app.dto.UserDto;
+import com.wiseai.reservemeetingroom.user.domain.User;
 import com.wiseai.reservemeetingroom.user.domain.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,13 @@ public class UserFacade {
 	public UserDto searchUser(Long id) {
 		return UserDto.from(service.findExistingUser(id));
 	}
-	public List<UserDto> searchUser(String keyword) {
-		return service.findExistingUser(keyword).stream().map(UserDto::from).toList();
+
+	public List<UserDto> searchUsers(String keyword) {
+		return service.findUsers(keyword).stream().map(UserDto::from).toList();
+	}
+
+	public UserDto createUser(UserDto userData) {
+		User user = service.createUser(userData.toEntity());
+		return UserDto.from(user);
 	}
 }
