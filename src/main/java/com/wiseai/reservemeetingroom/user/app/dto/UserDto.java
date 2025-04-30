@@ -48,7 +48,7 @@ public class UserDto {
 			.name(user.getName())
 			.email(user.getEmail())
 			.createdAt(createdAt)
-			.createdAt(updatedAt)
+			.updatedAt(updatedAt)
 			.build();
 
 	}
