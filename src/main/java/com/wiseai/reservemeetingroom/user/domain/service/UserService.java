@@ -3,6 +3,7 @@ package com.wiseai.reservemeetingroom.user.domain.service;
 import com.wiseai.reservemeetingroom.user.domain.User;
 import com.wiseai.reservemeetingroom.user.domain.repository.UserRepository;
 import com.wiseai.reservemeetingroom.user.exception.NotFoundUserException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,8 +20,7 @@ public class UserService {
 		return userRepository.findById(userId)
 			.orElseThrow(() -> new NotFoundUserException(userId));
 	}
-	public User findExistingUser(String email) {
-		return userRepository.findByEmail(email)
-			.orElseThrow(() -> new NotFoundUserException(email));
+	public List<User> findExistingUser(String keyword) {
+		return userRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword, keyword);
 	}
 }

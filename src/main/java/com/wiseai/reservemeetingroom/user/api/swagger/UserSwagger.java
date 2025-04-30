@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,12 +27,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface UserSwagger {
 
 	/*──────────────────────────────────────────────────────
-	 * 1. 유저 조회
+	 * 1. 특정 유저 조회
 	 *──────────────────────────────────────────────────────*/
 	@Operation(
-		summary = "User 조회",
+		summary = "User 특정 조회",
 		description = """
-			email로 유저를 조회합니다.
+			user pk로 유저를 조회합니다.
 			""",
 		responses = {
 			@ApiResponse(
@@ -51,10 +52,43 @@ public interface UserSwagger {
 			)
 		}
 	)
-	@PostMapping("/login/oauth")
-	UserResponse loginWithOAuth(
+	@GetMapping(User.ROOT)
+	UserResponse searchUser(
 		@Parameter(description = "유저 이메일", example = "test@email.com", required = true)
 		@RequestParam("email") String email
+	);
+
+
+	/*──────────────────────────────────────────────────────
+	 * 2. 전체 유저 조회
+	 *──────────────────────────────────────────────────────*/
+	@Operation(
+		summary = "User 전체 조회",
+		description = """
+			키워드를 입력하면, email과 name에서 키워드를 포함하는 유저를 전체 조회합니다.
+			""",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "유저 조회 성공",
+				content = @Content(
+					schema = @Schema(implementation = UserResponse.class)
+					/*examples = @ExampleObject(
+						value = """
+                        {
+                          "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                          "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                          "isOnboardingCompleted": false
+                        }"""
+					)*/
+				)
+			)
+		}
+	)
+	@GetMapping(User.ROOT)
+	UserResponse searchUsers(
+		@Parameter(description = "검색어", example = "아무개", required = true)
+		@RequestParam("keyword") String keyword
 	);
 
 }
