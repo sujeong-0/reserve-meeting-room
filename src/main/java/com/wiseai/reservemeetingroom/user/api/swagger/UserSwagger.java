@@ -1,17 +1,23 @@
 package com.wiseai.reservemeetingroom.user.api.swagger;
 
 import com.wiseai.reservemeetingroom.core.domain.UrlPath.User;
+import com.wiseai.reservemeetingroom.user.api.request.CreateUser;
 import com.wiseai.reservemeetingroom.user.api.response.UserResponse;
+import com.wiseai.reservemeetingroom.user.exception.DuplicateEmailException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 이 클래스는 유저 관련 문서를 담당합니다.
@@ -55,7 +61,7 @@ public interface UserSwagger {
 	@GetMapping(User.ROOT)
 	UserResponse searchUser(
 		@Parameter(description = "유저 이메일", example = "test@email.com", required = true)
-		@RequestParam("email") String email
+		@RequestParam("email") Long id
 	);
 
 
@@ -86,9 +92,51 @@ public interface UserSwagger {
 		}
 	)
 	@GetMapping(User.ROOT)
-	UserResponse searchUsers(
+	List<UserResponse> searchUsers(
 		@Parameter(description = "검색어", example = "아무개", required = true)
 		@RequestParam("keyword") String keyword
+	);
+	/*──────────────────────────────────────────────────────
+	 * 3. 유저 추가
+	 *──────────────────────────────────────────────────────*/
+	@Operation(
+		summary = "User 추가",
+		description = """
+			이름과 이메일을 입력해 유저를 추가합니다.
+			""",
+
+		requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+			required = true,
+			content = @Content(schema = @Schema(implementation = CreateUser.class),
+				examples = @ExampleObject(name = "createRequest",
+					value = """
+                    {
+                      "name": "홍길동",
+                      "email": "test@email.com"
+                    }"""
+				))
+		),
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "유저 추가 성공",
+				content = @Content(
+					schema = @Schema(implementation = UserResponse.class)
+				)
+			),
+			@ApiResponse(
+				responseCode = "400",
+				description = "email 중복",
+				content = @Content(
+					schema = @Schema(implementation = DuplicateEmailException.class)
+				)
+			)
+		}
+	)
+	@PostMapping(User.ROOT)
+	UserResponse createUser(
+		@Parameter(description = "추가할 유저 정보", required = true)
+		@RequestBody CreateUser user
 	);
 
 }

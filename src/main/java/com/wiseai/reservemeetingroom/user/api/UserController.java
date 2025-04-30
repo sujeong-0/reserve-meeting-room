@@ -3,6 +3,7 @@ package com.wiseai.reservemeetingroom.user.api;
 import com.wiseai.reservemeetingroom.core.domain.UrlPath.User;
 import com.wiseai.reservemeetingroom.user.api.request.CreateUser;
 import com.wiseai.reservemeetingroom.user.api.response.UserResponse;
+import com.wiseai.reservemeetingroom.user.api.swagger.UserSwagger;
 import com.wiseai.reservemeetingroom.user.app.UserFacade;
 import com.wiseai.reservemeetingroom.user.app.dto.UserDto;
 import jakarta.validation.Valid;
@@ -24,12 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(User.ROOT)
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UserSwagger {
 
 	private final UserFacade userFacade;
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping("/{userId}")
+	@Override
 	public UserResponse searchUser(
 		@PathVariable("userId") Long userId
 	) {
@@ -38,6 +40,7 @@ public class UserController {
 
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping
+	@Override
 	public List<UserResponse> searchUsers(
 		@RequestParam(value = "keyword", defaultValue = "") String keyword
 	) {
@@ -46,6 +49,7 @@ public class UserController {
 
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping
+	@Override
 	public UserResponse createUser(
 		@RequestBody @Valid CreateUser user
 	) {
