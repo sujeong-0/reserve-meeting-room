@@ -1,4 +1,4 @@
-package com.wiseai.reservemeetingroom.user.domain;
+package com.wiseai.reservemeetingroom.meeting_room.domain;
 
 import com.wiseai.reservemeetingroom.core.domain.BaseTimeEntity;
 import jakarta.persistence.Column;
@@ -14,42 +14,54 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- * 이 클래스는 유저 엔티티를 담당합니다.
+ * 이 클래스는 회의실 엔티티를 담당합니다.
  */
-
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Table(name = "users")
-public class User extends BaseTimeEntity {
+@Table(name = "meeting_rooms")
+public class MeetingRoom extends BaseTimeEntity {
 
-	/** 유저 아이디 */
+	/**
+	 * 회의실 아이디
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	/** 이름 */
+	/**
+	 * 이름
+	 */
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	/** 알림을 받을 이메일 */
+	/**
+	 * 위치
+	 */
 	@Column(name = "location", nullable = false, unique = true)
-	private String email;
+	private String location;
 
-	/** 삭제 여부 */
+	/**
+	 * 삭제 여부
+	 */
 	@Column(name = "is_deleted", nullable = false)
 	@Builder.Default
 	private boolean deleted = false;
 
-	public void updateFrom(User source) {
-		if (source.getName() != null) this.name = source.getName();
-		if (source.getEmail() != null) this.email = source.getEmail();
+	public void updateFrom(MeetingRoom source) {
+		if (source.getName() != null) {
+			this.name = source.getName();
+		}
+		if (source.getLocation() != null) {
+			this.location = source.getLocation();
+		}
 	}
 
 
 	public void markAsDeleted() {
 		this.deleted = true;
 	}
+
 }
