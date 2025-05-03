@@ -13,5 +13,22 @@ services:
       MYSQL_USER: wiseai
       MYSQL_PASSWORD: qawsedrf123!
     volumes:
-      - ./data:/Users/ggong/Develop/db
+      - mariadb_data:/var/lib/mysql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+  app:
+    build:
+      context: .
+    container_name: meetingroom-api
+    depends_on:
+      - mariadb
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/wiseai
+      SPRING_DATASOURCE_USERNAME: wiseai
+      SPRING_DATASOURCE_PASSWORD: qawsedrf123!
+    restart: unless-stopped
+
+volumes:
+  mariadb_data:
