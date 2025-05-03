@@ -26,7 +26,7 @@ public enum ErrorCode {
 
     // user
     NOT_FOUND_USER(NOT_FOUND, "사용자를 찾을 수 없습니다. %s"),
-    DUPLICATE_EMAIL(BAD_REQUEST, "이미 사용중인 이메일 입니다. email=%s"),
+    DUPLICATE_EMAIL(BAD_REQUEST, "이미 사용중인 이메일 입니다. location=%s"),
 
     // reservation
     NOT_FOUND_RESERVATION(NOT_FOUND, "예약을 찾을 수 없습니다. reservationId : %d"),
