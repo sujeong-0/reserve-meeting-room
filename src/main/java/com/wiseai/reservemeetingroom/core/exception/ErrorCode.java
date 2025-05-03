@@ -25,7 +25,8 @@ public enum ErrorCode {
     SERVER_ERROR(INTERNAL_SERVER_ERROR,"서버 오류가 발생했습니다. 관리자에게 문의하세요."),
 
     // user
-    NOT_FOUND_USER(NOT_FOUND, "사용자를 찾을 수 없습니다. userId : %d"),
+    NOT_FOUND_USER(NOT_FOUND, "사용자를 찾을 수 없습니다. %s"),
+    DUPLICATE_EMAIL(BAD_REQUEST, "이미 사용중인 이메일 입니다. email=%s"),
 
     // reservation
     NOT_FOUND_RESERVATION(NOT_FOUND, "예약을 찾을 수 없습니다. reservationId : %d"),

@@ -28,8 +28,8 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .servers(List.of(new Server().url(serverUrl).description(activeProfile + " server")))
-                .info(new Info().title("Code-Fit API Documentation")
-                        .description("Team.공진상, Code-Fit service API specification.")
+                .info(new Info().title("Reservation Meeting Room API Documentation")
+                        .description("회의실 예약 서비스에 대한 API 문서입니다.")
                         .version("1.0"));
     }
 }
