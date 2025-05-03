@@ -2,6 +2,7 @@ package com.wiseai.reservemeetingroom.user.api;
 
 import com.wiseai.reservemeetingroom.core.domain.UrlPath.User;
 import com.wiseai.reservemeetingroom.user.api.request.CreateUser;
+import com.wiseai.reservemeetingroom.user.api.request.UpdateUser;
 import com.wiseai.reservemeetingroom.user.api.response.UserResponse;
 import com.wiseai.reservemeetingroom.user.api.swagger.UserSwagger;
 import com.wiseai.reservemeetingroom.user.app.UserFacade;
@@ -11,8 +12,10 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,6 +57,18 @@ public class UserController implements UserSwagger {
 		@RequestBody @Valid CreateUser user
 	) {
 		UserDto saveUser = userFacade.createUser(user.toDto());
+		return UserResponse.from(saveUser);
+	}
+
+
+	@ResponseStatus(HttpStatus.OK)
+	@PatchMapping("/{userId}")
+	@Override
+	public UserResponse updateUser(
+		@RequestBody @Valid UpdateUser user,
+		@PathVariable("userId") Long userId
+	) {
+		UserDto saveUser = userFacade.updateUser( userId, user.toDto());
 		return UserResponse.from(saveUser);
 	}
 

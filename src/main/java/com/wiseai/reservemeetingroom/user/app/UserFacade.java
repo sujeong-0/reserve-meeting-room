@@ -28,4 +28,9 @@ public class UserFacade {
 		User user = service.createUser(userData.toEntity());
 		return UserDto.from(user);
 	}
+
+	public UserDto updateUser(Long userId, UserDto userData) {
+		User user = service.updateUser(userId, userData.toEntity());
+		return UserDto.from(user);
+	}
 }

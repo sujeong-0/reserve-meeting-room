@@ -35,4 +35,9 @@ public class User extends BaseTimeEntity {
 	/** 알림을 받을 이메일 */
 	@Column(name = "email", nullable = false, unique = true)
 	private String email;
+
+	public void updateFrom(User source) {
+		if (source.getName() != null) this.name = source.getName();
+		if (source.getEmail() != null) this.email = source.getEmail();
+	}
 }
