@@ -52,4 +52,13 @@ public class UserService {
 		findUser.updateFrom(user);
 		return findUser;
 	}
+
+	public User deleteUser(Long userId) {
+		User deleteUser = userRepository.findActiveById(userId)
+			.orElseThrow(() -> new NotFoundUserException(userId));
+
+		deleteUser.markAsDeleted();
+
+		return deleteUser;
+	}
 }

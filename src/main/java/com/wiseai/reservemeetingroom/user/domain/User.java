@@ -36,8 +36,17 @@ public class User extends BaseTimeEntity {
 	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
+	/** 삭제 여부 */
+	@Column(name = "is_deleted", nullable = false)
+	private boolean deleted = false;
+
 	public void updateFrom(User source) {
 		if (source.getName() != null) this.name = source.getName();
 		if (source.getEmail() != null) this.email = source.getEmail();
+	}
+
+
+	public void markAsDeleted() {
+		this.deleted = true;
 	}
 }

@@ -33,4 +33,9 @@ public class UserFacade {
 		User user = service.updateUser(userId, userData.toEntity());
 		return UserDto.from(user);
 	}
+
+	public UserDto deleteUser(Long userId) {
+		User user = service.deleteUser(userId);
+		return UserDto.from(user);
+	}
 }

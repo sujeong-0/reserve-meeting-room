@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -70,6 +71,18 @@ public class UserController implements UserSwagger {
 	) {
 		UserDto saveUser = userFacade.updateUser( userId, user.toDto());
 		return UserResponse.from(saveUser);
+	}
+
+
+
+	@ResponseStatus(HttpStatus.OK)
+	@DeleteMapping("/{userId}")
+//	@Override
+	public UserResponse deleteUser(
+		@PathVariable("userId") Long userId
+	) {
+		UserDto deletedUser = userFacade.deleteUser(userId);
+		return UserResponse.from(deletedUser);
 	}
 
 
