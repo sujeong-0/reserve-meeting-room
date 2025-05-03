@@ -35,11 +35,12 @@ public class User extends BaseTimeEntity {
 	private String name;
 
 	/** 알림을 받을 이메일 */
-	@Column(name = "email", nullable = false, unique = true)
+	@Column(name = "location", nullable = false, unique = true)
 	private String email;
 
 	/** 삭제 여부 */
 	@Column(name = "is_deleted", nullable = false)
+	@Builder.Default
 	private boolean deleted = false;
 
 	public void updateFrom(User source) {
