@@ -22,17 +22,17 @@ public class UserService {
 
 	@Transactional(readOnly = true)
 	public User findExistingUser(Long userId) {
-		return userRepository.findById(userId)
+		return userRepository.findActiveById(userId)
 			.orElseThrow(() -> new NotFoundUserException(userId));
 	}
 
 	@Transactional(readOnly = true)
 	public List<User> findUsers(String keyword) {
-		return userRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(keyword, keyword);
+		return userRepository.searchActiveUsers(keyword);
 	}
 
 	public User createUser(User user) {
-		userRepository.findByEmail(user.getEmail())
+		userRepository.findActiveByEmail(user.getEmail())
 			.ifPresent(existing -> {
 				throw new DuplicateEmailException(user.getEmail());
 			});
@@ -41,12 +41,14 @@ public class UserService {
 	}
 
 	public User updateUser(Long userId, User user) {
-		User findUser = userRepository.findById(userId)
+		User findUser = userRepository.findActiveById(userId)
 			.orElseThrow(() -> new NotFoundUserException(userId));
 
-		userRepository.findByEmail(user.getEmail())
+		userRepository.findActiveByEmail(user.getEmail())
 			.ifPresent(existing -> {
-				throw new DuplicateEmailException(user.getEmail());
+				if (existing != findUser) {
+					throw new DuplicateEmailException(user.getEmail());
+				}
 			});
 
 		findUser.updateFrom(user);
