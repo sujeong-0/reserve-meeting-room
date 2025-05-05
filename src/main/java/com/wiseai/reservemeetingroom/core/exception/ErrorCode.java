@@ -30,6 +30,8 @@ public enum ErrorCode {
 
     // reservation
     NOT_FOUND_RESERVATION(NOT_FOUND, "예약을 찾을 수 없습니다. reservationId : %d"),
+    OVERLAPPING_RESERVATION(BAD_REQUEST, "예약 시간이 기존 예약과 겹칩니다."),
+    INVALID_RESERVATION_SLOT(BAD_REQUEST, "예약에 연결된 시간 슬롯이 존재하지 않습니다. reservationId : %d"),
 
     // meeting room
     NOT_FOUND_MEETING_ROOM(TOO_MANY_REQUESTS, "회의실을 찾을 수 없습니다. meetingRoomID : %d"),
