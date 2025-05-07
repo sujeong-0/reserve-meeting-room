@@ -43,7 +43,7 @@ public class ReservationService {
 	public ReservationDetailDto createReservation(Long userId, List<Long> slotIds) {
 		User user = userService.findExistingUser(userId);
 
-		List<ReserveSlot> slots = slotRepository.findAllById(slotIds);
+		List<ReserveSlot> slots = slotRepository.findAllByIdWithLock(slotIds);
 		if (slots.size() != slotIds.size()) {
 			throw new NotFoundReservationSlotException(slotIds);
 		}
