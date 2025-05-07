@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 이 클래스는 User DTO를 담당합니다.

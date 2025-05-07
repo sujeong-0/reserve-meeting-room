@@ -10,6 +10,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode(of = "id",callSuper = false)
 @Table(name = "users")
 public class User extends BaseTimeEntity {
 
@@ -35,7 +37,7 @@ public class User extends BaseTimeEntity {
 	private String name;
 
 	/** 알림을 받을 이메일 */
-	@Column(name = "location", nullable = false, unique = true)
+	@Column(name = "email", nullable = false, unique = true)
 	private String email;
 
 	/** 삭제 여부 */
