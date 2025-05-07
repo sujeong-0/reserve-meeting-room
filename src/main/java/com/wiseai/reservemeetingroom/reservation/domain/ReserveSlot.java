@@ -66,4 +66,8 @@ public class ReserveSlot extends BaseTimeEntity {
 		return new ReserveSlot(null, dto.getMeetingRoomDto().toEntity(), dto.getStartTime(), dto.getEndTime(), false);
 
 	}
+
+	public static ReserveSlot of(MeetingRoom room, Instant start, Instant end) {
+		return new ReserveSlot(null, room, start, end, false);
+	}
 }

@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface MeetingRoomQueryRepository {
 
 	List<MeetingRoom> searchActiveMeetingRooms(String keyword);
+	List<MeetingRoom> searchActiveMeetingRooms();
 	Optional<MeetingRoom> findActiveById(Long id);
 }

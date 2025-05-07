@@ -35,6 +35,16 @@ public class MeetingRoomQueryRepositoryImpl implements MeetingRoomQueryRepositor
 			.where(condition)
 			.fetch();
 	}
+	@Override
+	public List<MeetingRoom> searchActiveMeetingRooms() {
+		BooleanBuilder condition = new BooleanBuilder();
+		condition.and(meetingRoom.deleted.isFalse());
+
+		return queryFactory
+			.selectFrom(meetingRoom)
+			.where(condition)
+			.fetch();
+	}
 
 	@Override
 	public Optional<MeetingRoom> findActiveById(Long id) {
