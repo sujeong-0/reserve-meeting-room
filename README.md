@@ -31,18 +31,23 @@ GitHub Repository: [https://github.com/sujeong-0/reserve-meeting-room](https://g
 
 ## 실행 방법
 
-### 1. 개발 환경 클론
+1. 개발 환경 클론
 
-```bash
-git clone https://github.com/sujeong-0/reserve-meeting-room.git
-cd reserve-meeting-room
-```
+    ```bash
+    git clone https://github.com/sujeong-0/reserve-meeting-room.git
+    cd reserve-meeting-room
+    ```
+2. build
 
-### 2. Docker 실행
+    ```bash
+   ./gradlew clean build -x test
+    ```
 
-```bash
-docker-compose up
-```
+3. Docker 실행
+
+    ```bash
+    docker-compose up
+    ```
 
 >  최초 실행 시에는 아래 명령어를 권장합니다:
 > ```bash
