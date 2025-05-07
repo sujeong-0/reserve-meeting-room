@@ -36,4 +36,7 @@ public class Reservation extends BaseTimeEntity {
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
+	public static Reservation of(User user) {
+		return new Reservation(null, user);
+	}
 }

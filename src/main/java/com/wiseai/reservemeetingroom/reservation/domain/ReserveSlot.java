@@ -2,6 +2,7 @@ package com.wiseai.reservemeetingroom.reservation.domain;
 
 import com.wiseai.reservemeetingroom.core.domain.BaseTimeEntity;
 import com.wiseai.reservemeetingroom.meeting_room.domain.MeetingRoom;
+import com.wiseai.reservemeetingroom.reservation.app.dto.ReserveSlotDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -59,5 +60,10 @@ public class ReserveSlot extends BaseTimeEntity {
 	 * 예약 여부
 	 */
 	@Column(name = "is_reserved", nullable = false)
-	private boolean reserved;
+	private boolean isReserved;
+
+	public static ReserveSlot of(ReserveSlotDto dto) {
+		return new ReserveSlot(null, dto.getMeetingRoomDto().toEntity(), dto.getStartTime(), dto.getEndTime(), false);
+
+	}
 }

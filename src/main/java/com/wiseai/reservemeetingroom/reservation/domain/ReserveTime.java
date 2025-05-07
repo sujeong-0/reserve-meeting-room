@@ -1,5 +1,6 @@
 package com.wiseai.reservemeetingroom.reservation.domain;
 
+import com.wiseai.reservemeetingroom.reservation.app.dto.ReserveSlotDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -38,4 +39,8 @@ public class ReserveTime {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "slot_id", nullable = false)
 	private ReserveSlot slot;
+
+	public static ReserveTime of(Reservation reservation, ReserveSlot slot) {
+		return new ReserveTime(null, reservation, slot);
+	}
 }
