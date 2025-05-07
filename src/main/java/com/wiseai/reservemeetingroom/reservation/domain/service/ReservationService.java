@@ -11,6 +11,7 @@ import com.wiseai.reservemeetingroom.reservation.domain.repository.ReserveTimeRe
 import com.wiseai.reservemeetingroom.reservation.exception.NotFoundReservationException;
 import com.wiseai.reservemeetingroom.reservation.exception.NotFoundReservationSlotException;
 import com.wiseai.reservemeetingroom.reservation.exception.OverlappingReservation;
+import com.wiseai.reservemeetingroom.reservation.exception.SlotNotFoundForReservationException;
 import com.wiseai.reservemeetingroom.user.domain.User;
 import com.wiseai.reservemeetingroom.user.domain.service.UserService;
 import java.util.List;
@@ -39,7 +40,6 @@ public class ReservationService {
 	}
 
 
-	@Transactional
 	public ReservationDetailDto createReservation(Long userId, List<Long> slotIds) {
 		User user = userService.findExistingUser(userId);
 
@@ -64,5 +64,28 @@ public class ReservationService {
 		slotRepository.updateIsReservedTrueByIds(slotIds);
 
 		return ReservationDetailDto.from(reservation, reserveTimes);
+	}
+
+
+	public ReservationDetailDto cancelReservation(Long reservationId) {
+		Reservation reservation = reservationRepository.findById(reservationId)
+			.orElseThrow(() -> new NotFoundReservationException(reservationId));
+
+		List<ReserveTime> reserveTimes = timeRepository.findAllByReservationId(reservationId);
+		if (reserveTimes.isEmpty()) {
+			throw new SlotNotFoundForReservationException(reservationId);
+		}
+
+		ReservationDetailDto detailDto = ReservationDetailDto.from(reservation, reserveTimes);
+
+		List<Long> slotIds = reserveTimes.stream()
+			.map(rt -> rt.getSlot().getId())
+			.toList();
+
+		slotRepository.unreserveSlotsByIds(slotIds);
+		timeRepository.deleteAllByReservationId(reservationId);
+		reservationRepository.delete(reservation);
+
+		return detailDto;
 	}
 }

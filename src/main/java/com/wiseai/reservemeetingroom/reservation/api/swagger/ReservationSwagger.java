@@ -2,8 +2,10 @@ package com.wiseai.reservemeetingroom.reservation.api.swagger;
 
 import com.wiseai.reservemeetingroom.reservation.api.request.CreateReservation;
 import com.wiseai.reservemeetingroom.reservation.api.response.ReservationResponse;
+import com.wiseai.reservemeetingroom.reservation.exception.NotFoundReservationException;
 import com.wiseai.reservemeetingroom.reservation.exception.NotFoundReservationSlotException;
 import com.wiseai.reservemeetingroom.reservation.exception.OverlappingReservation;
+import com.wiseai.reservemeetingroom.reservation.exception.SlotNotFoundForReservationException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,7 +60,7 @@ public interface ReservationSwagger {
 	)
 	@GetMapping("{reservationId}")
 	ReservationResponse searchReservation(
-		@Parameter(description = "예약 아이디", example = "test@email.com", required = true)
+		@Parameter(description = "예약 아이디", example = "1", required = true)
 		@PathVariable("reservationId") Long id
 	);
 
@@ -104,4 +107,41 @@ public interface ReservationSwagger {
 	ReservationResponse createReservation(
 		@RequestBody CreateReservation createReservation
 	);
+
+	/*──────────────────────────────────────────────────────
+	 * 4. 예약 취소
+	 *──────────────────────────────────────────────────────*/
+	@Operation(
+		summary = "Reservation 취소",
+		description = """
+		reservation pk로 예약을 취소합니다.
+		취소된 예약 정보를 반환합니다.
+		""",
+		responses = {
+			@ApiResponse(
+				responseCode = "200",
+				description = "예약 취소 성공",
+				content = @Content(
+					schema = @Schema(implementation = ReservationResponse.class)
+				)
+			),
+			@ApiResponse(
+				responseCode = "404",
+				description = "예약을 찾을 수 없음",
+				content = @Content(
+					schema = @Schema(implementation = NotFoundReservationException.class)
+				)
+			),
+			@ApiResponse(
+				responseCode = "404",
+				description = "예약에 예약시간 정보가 없음",
+				content = @Content(
+					schema = @Schema(implementation = SlotNotFoundForReservationException.class)
+				)
+			)
+		}
+	)
+	@ResponseStatus(HttpStatus.OK)
+	@DeleteMapping("/{reservationId}")
+	ReservationResponse cancelReservation(@PathVariable Long reservationId);
 }

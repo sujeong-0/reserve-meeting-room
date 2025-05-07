@@ -29,4 +29,8 @@ public interface ReserveSlotRepository extends JpaRepository<ReserveSlot, Long> 
 	@Modifying
 	@Query("UPDATE ReserveSlot rs SET rs.isReserved = true WHERE rs.id IN :slotIds")
 	int updateIsReservedTrueByIds(@Param("slotIds") List<Long> slotIds);
+
+	@Modifying
+	@Query("UPDATE ReserveSlot rs SET rs.reserved = false WHERE rs.id IN :slotIds")
+	void unreserveSlotsByIds(@Param("slotIds") List<Long> slotIds);
 }
