@@ -1,5 +1,6 @@
 package com.wiseai.reservemeetingroom.reservation.app;
 
+import com.wiseai.reservemeetingroom.reservation.api.request.CreateReservation;
 import com.wiseai.reservemeetingroom.reservation.app.dto.ReservationDetailDto;
 import com.wiseai.reservemeetingroom.reservation.domain.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,10 @@ public class ReservationFacade {
 
 	public ReservationDetailDto searchReservation(Long id) {
 		return service.findReservation(id);
+	}
+
+	public ReservationDetailDto createReservation(CreateReservation createReservation) {
+		return service.createReservation(createReservation.getUserId(), createReservation.getSlotIds());
 	}
 
 
