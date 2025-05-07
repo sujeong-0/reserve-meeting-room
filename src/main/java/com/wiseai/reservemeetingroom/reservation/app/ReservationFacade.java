@@ -23,5 +23,8 @@ public class ReservationFacade {
 		return service.createReservation(createReservation.getUserId(), createReservation.getSlotIds());
 	}
 
+	public ReservationDetailDto cancelReservation(Long reservationId) {
+		return service.cancelReservation(reservationId);
+	}
 
 }

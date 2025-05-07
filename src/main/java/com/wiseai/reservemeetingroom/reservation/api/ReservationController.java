@@ -8,6 +8,7 @@ import com.wiseai.reservemeetingroom.reservation.app.ReservationFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,6 +46,11 @@ public class ReservationController implements ReservationSwagger {
 	}
 
 
-
+	@ResponseStatus(HttpStatus.OK)
+	@DeleteMapping("/{reservationId}")
+	@Override
+	public ReservationResponse cancelReservation(@PathVariable Long reservationId) {
+		return ReservationResponse.from(reservationFacade.cancelReservation(reservationId));
+	}
 
 }
